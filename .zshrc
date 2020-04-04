@@ -1,6 +1,8 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
+export ZSHRC_SRC_DIR="/mnt/d/CodeLibrary/tools/zshrc/"
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -75,9 +77,22 @@ export PATH="/homes/bbemis/bin/.amd64-linux:/homes/bbemis/bin:/usr/local/bin:/bi
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-  alias i="dirinfo"
-  alias p="pluma"
 
+run_within_dir() {
+    target_dir="$1"
+    prev_dir=$(pwd)
+    shift
+    cd "${target_dir}" && "$@"
+    cd "${prev_dir}"
+}
+
+
+# ==============================
+# Aliases
+# ==============================
+
+# Edits zshrc in zsh repo, deploys it, and sources it
+alias zshconfig="vim ${ZSHRC_SRC_DIR}/.zshrc; sh ${ZSHRC_SRC_DIR}/deploy.sh; source ~/.zshrc"
+alias zshcommit="run_within_dir ${ZSHRC_SRC_DIR} git add .zshrc ; run_within_dir ${ZSHRC_SRC_DIR} git status; run_within_dir ${ZSHRC_SRC_DIR} git commit -m ${1}"
+alias hoe="ls -la"
+alias zsh_dir="echo '${ZSHRC_SRC_DIR}'"
