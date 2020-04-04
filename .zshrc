@@ -78,7 +78,25 @@ export PATH="/homes/bbemis/bin/.amd64-linux:/homes/bbemis/bin:/usr/local/bin:/bi
 # For a full list of active aliases, run `alias`.
 #
 
+
+# ==============================
+# Aliases
+# ==============================
+
+# ZSHRC Management Aliases
+alias zshconfig="vim ${ZSHRC_SRC_DIR}/.zshrc; sh ${ZSHRC_SRC_DIR}/deploy.sh; source ~/.zshrc"
+alias zshcommit="run_within_dir ${ZSHRC_SRC_DIR} git add .zshrc ; run_within_dir ${ZSHRC_SRC_DIR} git commit -m ${1}"
+alias zshdir="echo '${ZSHRC_SRC_DIR}'"
+
+
+# ============================
+# Bash Functions
+# ===========================
+
+
 run_within_dir() {
+    # Runs command within directory and cds back to original directory
+    # Example: run_within_dir /zshrc git commit
     target_dir="$1"
     prev_dir=$(pwd)
     shift
@@ -87,12 +105,3 @@ run_within_dir() {
 }
 
 
-# ==============================
-# Aliases
-# ==============================
-
-# Edits zshrc in zsh repo, deploys it, and sources it
-alias zshconfig="vim ${ZSHRC_SRC_DIR}/.zshrc; sh ${ZSHRC_SRC_DIR}/deploy.sh; source ~/.zshrc"
-alias zshcommit="run_within_dir ${ZSHRC_SRC_DIR} git add .zshrc ; run_within_dir ${ZSHRC_SRC_DIR} git status; run_within_dir ${ZSHRC_SRC_DIR} git commit -m ${1}"
-alias hoe="ls -la"
-alias zsh_dir="echo '${ZSHRC_SRC_DIR}'"
