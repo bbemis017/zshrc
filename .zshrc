@@ -1,8 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-export ZSHRC_SRC_DIR="/mnt/d/CodeLibrary/tools/zshrc/"
-
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -51,9 +49,20 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
+# ===============================
 # User configuration
+# ===============================
 
 export PATH="/homes/bbemis/bin/.amd64-linux:/homes/bbemis/bin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.7.3:/usr/games/bin:."
+
+# for docker
+export PATH="${PATH}:${HOME}/.local/bin"
+export DOCKER_HOST="tcp://localhost:2375"
+
+export ZSHRC_SRC_DIR="/mnt/d/CodeLibrary/tools/zshrc/"
+
+export codelibrary="/mnt/d/CodeLibrary"
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -88,6 +97,9 @@ alias zshconfig="vim ${ZSHRC_SRC_DIR}/.zshrc; sh ${ZSHRC_SRC_DIR}/deploy.sh; sou
 alias zshcommit="run_within_dir ${ZSHRC_SRC_DIR} git add .zshrc ; run_within_dir ${ZSHRC_SRC_DIR} git commit -m ${1}"
 alias zshdir="echo '${ZSHRC_SRC_DIR}'"
 
+# python projects
+alias pysource="source local_env/bin/activate"
+
 
 # ============================
 # Bash Functions
@@ -102,6 +114,11 @@ run_within_dir() {
     shift
     cd "${target_dir}" && "$@"
     cd "${prev_dir}"
+}
+
+gitignore_global() {
+   git config --global core.excludesfile ~/.gitignore_global
+   echo "${1}" >> ~/.gitignore_global
 }
 
 
