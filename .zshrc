@@ -121,4 +121,13 @@ gitignore_global() {
    echo "${1}" >> ~/.gitignore_global
 }
 
+gitignore() {
+   echo "${1}" > ~/.gitignore
+}
+
+git_clone() {
+   git clone "git@github.com:bbemis017/${1}.git"
+}
+  
+
 
