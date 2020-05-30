@@ -62,6 +62,9 @@ export DOCKER_HOST="tcp://localhost:2375"
 export ZSHRC_SRC_DIR="/mnt/d/CodeLibrary/tools/zshrc/"
 
 export codelibrary="/mnt/d/CodeLibrary"
+export keys="${codelibrary}/security/aws-keys"
+export ec2="${codelibrary}/tools/aws"
+export BROWSER=/mnt/c/"Program Files (x86)"/Google/Chrome/Application/chrome.exe
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -122,12 +125,41 @@ gitignore_global() {
 }
 
 gitignore() {
-   echo "${1}" > ~/.gitignore
+   echo "${1}" > .gitignore
 }
 
 git_clone() {
    git clone "git@github.com:bbemis017/${1}.git"
 }
-  
+
+git_push() {
+  branch=`git branch | sed -n -e 's/^\* \(.*\)/\1/p'`
+  git push origin "${branch}"
+
+  repo_path=`git rev-parse --show-toplevel`
+  repo_name=`basename ${repo_path}`
+  pr_url="https://github.com/bbemis017/${repo_name}/pull/new/${branch}"
+  $BROWSER ${pr_url}
+}
+
+protect_key() {
+   sudo chmod 600 "${1}"
+}
+
+ssh_aws() {
+   key="${keys}/${AWS_KEYFILE}"
+   host="${AWS_USER}@${AWS_HOST}"
+   echo "sshing into ${key} ${host}"
+   ssh -i "${key}" "${host}"
+} 
+
+export_env() {
+   temp_file="export_env.temp"
+   cat "${1}" | grep -v "^$" | grep -v "^#" > ${temp_file} 
+   while IFS= read -r line; do
+	  export "${line}"
+   done < ${temp_file}
+   rm ${temp_file}
+}
 
 
