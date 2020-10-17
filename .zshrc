@@ -53,7 +53,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 # ===============================
 
-export PATH="/homes/bbemis/bin/.amd64-linux:/homes/bbemis/bin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.7.3:/usr/games/bin:."
+export PATH="/homes/bbemis/bin/.amd64-linux:/homes/bbemis/bin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.7.3:/usr/games/bin:/home/bbemis/.yarn/bin:."
 
 # for docker
 export PATH="${PATH}:${HOME}/.local/bin"
@@ -65,6 +65,10 @@ export codelibrary="/mnt/d/CodeLibrary"
 export keys="${codelibrary}/security/aws-keys"
 export ec2="${codelibrary}/tools/aws"
 export BROWSER=/mnt/c/"Program Files (x86)"/Google/Chrome/Application/chrome.exe
+
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -99,6 +103,7 @@ export BROWSER=/mnt/c/"Program Files (x86)"/Google/Chrome/Application/chrome.exe
 alias zshconfig="vim ${ZSHRC_SRC_DIR}/.zshrc; sh ${ZSHRC_SRC_DIR}/deploy.sh; source ~/.zshrc"
 alias zshcommit="run_within_dir ${ZSHRC_SRC_DIR} git add .zshrc ; run_within_dir ${ZSHRC_SRC_DIR} git commit -m ${1}"
 alias zshdir="echo '${ZSHRC_SRC_DIR}'"
+alias mkcd="mkdir ${1} ; cd ${1}"
 
 # python projects
 alias pysource="source local_env/bin/activate"
@@ -152,6 +157,15 @@ ssh_aws() {
    echo "sshing into ${key} ${host}"
    ssh -i "${key}" "${host}"
 } 
+
+scp_aws(){
+  key="${keys}/${AWS_KEYFILE}"
+  host="${AWS_USER}@${AWS_HOST}"
+  file="${1}"
+  remote_path="${host}:${2}"
+  echo "Uploading ${file} to ${remote_path}"
+  scp -i "${key}" "${file}" "${remote_path}"
+}
 
 export_env() {
    temp_file="export_env.temp"
